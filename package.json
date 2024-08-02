@@ -1,0 +1,7 @@
+{
+  "name": "xixi-bots",
+  "packageManager": "yarn@3.6.3",
+  "dependencies": {
+    "telegraf": "^4.16.3"
+  }
+}
