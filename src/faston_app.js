@@ -1,22 +1,16 @@
 import { Telegraf } from 'telegraf';
-import { createInterface } from "readline";
+import express from 'express';
 import axios from "axios";
-// import path from 'path';
-// import fs from 'fs';
+import dotenv from 'dotenv';
 
-const rl = createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
 
-const question = (question) =>
-    new Promise((resolve) => rl.question(question, resolve));
+dotenv.config();
 
-const accessToken = await question("Enter your bot access token: ");
-const bot = new Telegraf(accessToken);
+const app = express();
+const bot = new Telegraf(process.env.FASTON_BOT_TOKEN);
 
 const checkBot = async () => {
-    const url = `https://api.telegram.org/bot${accessToken}/getMe`;
+    const url = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/getMe`;
     try {
         const response = await axios.get(url);
         if (response.data.ok) {
@@ -24,57 +18,24 @@ const checkBot = async () => {
             return response.data.result;
         } else {
             console.error('Invalid bot token:', response.data);
-            process.exit(1);
+            throw new Error('Invalid bot token');
         }
     } catch (error) {
         console.error('Error checking bot token:', error);
-        process.exit(1);
+        throw error;
     }
 };
 
-const botInfo = await checkBot();
-bot.botInfo = botInfo;
 bot.reaction("👍", () => {
     console.log("added")
 });
 
-bot.telegram.getMe().then((res) => console.log(`Bot started on https://t.me/${res.username}`))
-
-console.log('Configuring bot commands...');
-
-// const imagePath = path.join(process.cwd(), 'image.png');
-// const imageBuffer = fs.readFileSync(imagePath);
-
 bot.start((ctx) => {
-    // ctx.replyWithPhoto({ source: imageBuffer }, {
-    //     caption: 'Welcome!!!',
-    //     reply_markup: {
-    //         inline_keyboard: [
-    //             [
-    //                 {
-    //                     text: "开始线上", web_app: {
-    //                         url: `https://mini-app-gray.vercel.app/`
-    //                     }
-    //                 },
-    //                 {
-    //                     text: "开始本地", web_app: {
-    //                         url: `https://2aa1-14-154-27-19.ngrok-free.app/`
-    //                     }
-    //                 },
-    //                 {
-    //                     text: "关于我们", callback_data: "about_us"
-    //                 }
-    //             ],
-    //         ],
-    //         one_time_keyboard: false,
-    //     }
-    // });
-
     ctx.reply(`Hey ${ctx.from.username || ctx.from.first_name + " " + ctx.from.last_name} - welcome to Faston Swap! ⚡️
 
 Your one-stop cross chain bridge which support 200+ blockchains and 3000+ tokens.
 
-Here’s what you can do with Faston now:
+Here's what you can do with Faston now:
 🌞 Farm Faston Points for FREE and secure early user benefits + airdrops.  
 🧑 Invite Friends: Bring your friends and family for more FPs! More friends = more FPs
 🥊 Complete Quests: Finish tasks to rack up even more FPs!
@@ -100,26 +61,30 @@ Join our announcements channel to get the latest updates and the best ways to ge
             ],
             one_time_keyboard: false,
         },
-        one_time_keyboard: false,
     })
 });
 
+// Webhook 处理
+app.use(express.json());
+app.use(bot.webhookCallback('/api/webhook'));
 
-// // set commands
-// bot.telegram.setMyCommands([
-//     { command: 'start', description: '/start' },
-// ]);
-
-// Start bot
-console.log('Launching bot...');
-bot.launch(() => console.log("Bot is starting!")).then(() => {
-    console.log('Bot launched successfully');
-    process.exit(0)
-}).catch((error) => {
-    console.error('Error launching bot:', error);
-    process.exit(1);
+// 健康检查路由
+app.get('/api/health', (req, res) => {
+    res.status(200).send('OK');
 });
 
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
+// 初始化函数
+const init = async () => {
+    try {
+        const botInfo = await checkBot();
+        bot.botInfo = botInfo;
+        console.log(`Bot started on https://t.me/${botInfo.username}`);
+    } catch (error) {
+        console.error('Failed to initialize bot:', error);
+    }
+};
+
+init();
+
+// 为 Vercel serverless 函数导出 Express app
+export default app;
