@@ -1,9 +1,9 @@
 import { Telegraf } from 'telegraf';
 import express from 'express';
 import axios from "axios";
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
 // 添加错误处理中间件
 app.use((err, req, res, next) => {
