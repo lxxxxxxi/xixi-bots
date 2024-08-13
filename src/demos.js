@@ -32,22 +32,17 @@ import { createInterface } from "readline";
 import axios from "axios";
 import path from 'path';
 import fs from 'fs';
+import dotenv from 'dotenv';
+
 const imagePath = path.join(process.cwd(), 'img.jpg');
 const imageBuffer = fs.readFileSync(imagePath);
 
-const rl = createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
+dotenv.config();
 
-const question = (question) =>
-    new Promise((resolve) => rl.question(question, resolve));
-
-const accessToken = await question("Enter your bot access token: ");
-const bot = new Telegraf(accessToken);
+const bot = new Telegraf(process.env.KGTOLB_BOT_TOKEN);
 
 const checkBot = async () => {
-    const url = `https://api.telegram.org/bot${accessToken}/getMe`;
+    const url = `https://api.telegram.org/bot${process.env.KGTOLB_BOT_TOKEN}/getMe`;
     try {
         const response = await axios.get(url);
         if (response.data.ok) {

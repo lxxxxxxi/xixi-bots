@@ -5,6 +5,21 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// 添加错误处理中间件
+app.use((err, req, res, next) => {
+    console.error('Error:', err);
+    res.status(500).send('Something broke!');
+});
+
+// 添加一个简单的健康检查路由
+app.get('/api/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
+// Webhook 处理
+app.use(bot.webhookCallback('/api/webhook'));
+
+
 const app = express();
 const bot = new Telegraf(process.env.FASTON_BOT_TOKEN);
 
@@ -63,15 +78,6 @@ Join our announcements channel to get the latest updates and the best ways to ge
             one_time_keyboard: false,
         },
     })
-});
-
-// Webhook 处理
-app.use(express.json());
-app.use(bot.webhookCallback('/api/webhook'));
-
-// 健康检查路由
-app.get('/api/health', (req, res) => {
-    res.status(200).send('OK');
 });
 
 // 初始化函数

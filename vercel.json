@@ -2,14 +2,18 @@
     "version": 2,
     "builds": [
         {
-            "src": "src/faston_app.js",
+            "src": "faston_app.js",
             "use": "@vercel/node"
         }
     ],
     "routes": [
         {
             "src": "/api/webhook",
-            "dest": "src/faston_app.js"
+            "dest": "faston_app.js"
+        },
+        {
+            "src": "/api/health",
+            "dest": "faston_app.js"
         }
     ]
 }
