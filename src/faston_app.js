@@ -3,14 +3,15 @@ import express from 'express';
 import axios from "axios";
 import dotenv from 'dotenv';
 
-
 dotenv.config();
 
 const app = express();
 const bot = new Telegraf(process.env.FASTON_BOT_TOKEN);
 
 const checkBot = async () => {
-    const url = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/getMe`;
+    const url = `https://api.telegram.org/bot${process.env.FASTON_BOT_TOKEN}/getMe`;
+    console.log("url", url);
+
     try {
         const response = await axios.get(url);
         if (response.data.ok) {
