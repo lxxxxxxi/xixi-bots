@@ -2,8 +2,11 @@ import { Telegraf } from 'telegraf';
 import express from 'express';
 import axios from "axios";
 // import dotenv from 'dotenv';
-
 // dotenv.config();
+
+const token = process.env.FASTON_BOT_TOKEN;
+const app = express();
+const bot = new Telegraf(token);
 
 // 添加错误处理中间件
 app.use((err, req, res, next) => {
@@ -11,20 +14,20 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-// 添加一个简单的健康检查路由
-app.get('/api/health', (req, res) => {
+// Health check route
+app.get('/health', (req, res) => {
     res.status(200).send('OK');
 });
 
-// Webhook 处理
-app.use(bot.webhookCallback('/api/webhook'));
+
+// Set the bot API endpoint
+app.use(await bot.createWebhook({ domain: "https://xixi-bots.vercel.app/" }));
 
 
-const app = express();
-const bot = new Telegraf(process.env.FASTON_BOT_TOKEN);
+bot.hears("text", ctx => ctx.reply("Hello"));
 
 const checkBot = async () => {
-    const url = `https://api.telegram.org/bot${process.env.FASTON_BOT_TOKEN}/getMe`;
+    const url = `https://api.telegram.org/bot${token}/getMe`;
     console.log("url", url);
 
     try {
