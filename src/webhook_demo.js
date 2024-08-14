@@ -13,6 +13,10 @@ app.get('/health', (req, res) => {
     res.status(200).send('OK');
 });
 
+app.get('/token', (req, res) => {
+    res.status(200).send(token);
+});
+
 // Set the bot API endpoint
 app.use(await bot.createWebhook({ domain: "https://xixi-bots.vercel.app/" }));
 

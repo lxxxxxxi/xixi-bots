@@ -8,15 +8,7 @@
     ],
     "routes": [
         {
-            "src": "/",
-            "dest": "src/webhook_demo.js"
-        },
-        {
-            "src": "/api/webhook",
-            "dest": "src/webhook_demo.js"
-        },
-        {
-            "src": "/api/health",
+            "src": "/bot/(.*)",
             "dest": "src/webhook_demo.js"
         }
     ]
