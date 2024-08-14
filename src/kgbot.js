@@ -1,10 +1,8 @@
 import { Telegraf, Markup, Scenes, session } from 'telegraf';
 import { message } from 'telegraf/filters';
 
-// console.log(process.env, process.env.KGTOLB_BOT_TOKEN);
-// const bot = new Telegraf(process.env.KGTOLB_BOT_TOKEN);
 
-const bot = new Telegraf("7062378360:AAFrJEVtXloDpvqtVkZac6W9xYRu87oF_vs");
+const bot = new Telegraf();
 
 let barWeight = 20; // Default bar weight in kg
 
