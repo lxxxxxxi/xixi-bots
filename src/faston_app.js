@@ -1,8 +1,9 @@
 import { Telegraf } from 'telegraf';
 import express from 'express';
 import axios from "axios";
-// import dotenv from 'dotenv';
-// dotenv.config();
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const token = process.env.FASTON_BOT_TOKEN;
 const app = express();
@@ -14,11 +15,9 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-
 app.get('/health', (req, res) => {
     res.status(200).send('OK');
 });
-
 
 // Set the bot API endpoint
 app.use(await bot.createWebhook({ domain: "https://xixi-bots.vercel.app/" }));
