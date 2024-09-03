@@ -8,7 +8,7 @@ const token = process.env.KGTOLB_BOT_TOKEN;
 const bot = new Telegraf(token);
 
 // Set the bot API endpoint
-app.use(await bot.createWebhook({ domain: "https://xixi-bots.vercel.app/" }));
+// app.use(await bot.createWebhook({ domain: "https://xixi-bots.vercel.app/" }));
 
 bot.hears("text", ctx => ctx.reply("Hello"));
 
