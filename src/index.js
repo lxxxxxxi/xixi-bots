@@ -1,5 +1,5 @@
 import express from 'express';
-import faston_bot from './faston_app';
+import faston_bot from './faston_app.js';
 
 const app = express();
 
