@@ -17,6 +17,6 @@ app.get('/', (req, res) => {
 // });
 
 // app.use(await bot.createWebhook({ domain: "https://xixi-bots.vercel.app/bot1" }));
-app.use('/bot1', faston_bot.webhookCallback('/bot1'));
+// app.use('/bot1', faston_bot.webhookCallback('/bot1'));
 
 export default app;
