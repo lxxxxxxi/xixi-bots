@@ -1,27 +1,14 @@
 import { Telegraf } from 'telegraf';
-import express from 'express';
 import axios from "axios";
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const token = process.env.KGTOLB_BOT_TOKEN;
-const app = express();
 const bot = new Telegraf(token);
-
-// 添加错误处理中间件
-app.use((err, req, res, next) => {
-    console.error('Error:', err);
-    res.status(500).send('Something broke!');
-});
-
-app.get('/health', (req, res) => {
-    res.status(200).send('OK');
-});
 
 // Set the bot API endpoint
 app.use(await bot.createWebhook({ domain: "https://xixi-bots.vercel.app/" }));
-
 
 bot.hears("text", ctx => ctx.reply("Hello"));
 
@@ -95,5 +82,4 @@ const init = async () => {
 
 init();
 
-// 为 Vercel serverless 函数导出 Express app
-export default app;
+export default bot;
