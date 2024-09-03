@@ -23,3 +23,5 @@ app.post('/bot2', (req, res) => {
     console.log('Bot2 webhook received:', body);
     res.status(200).send('Bot2 webhook processed');
 });
+
+export default app;
