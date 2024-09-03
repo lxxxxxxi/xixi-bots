@@ -1,28 +1,30 @@
-import { Telegraf } from 'telegraf';
+import { Telegraf } from "telegraf";
 import axios from "axios";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 const token = process.env.XXXXXX_BOT_TOKEN;
+if (!token)
+    throw new Error("Bot token is required");
 const bot = new Telegraf(token);
 // Set the bot API endpoint
 // app.use(await bot.createWebhook({ domain: "https://xixi-bots.vercel.app/" }));
-bot.hears("text", ctx => ctx.reply("Hello"));
+bot.hears("text", (ctx) => ctx.reply("Hello"));
 const checkBot = async () => {
     const url = `https://api.telegram.org/bot${token}/getMe`;
     console.log("url", url);
     try {
         const response = await axios.get(url);
         if (response.data.ok) {
-            console.log('Bot token is valid. Bot information:', response.data.result);
+            console.log("Bot token is valid. Bot information:", response.data.result);
             return response.data.result;
         }
         else {
-            console.error('Invalid bot token:', response.data);
-            throw new Error('Invalid bot token');
+            console.error("Invalid bot token:", response.data);
+            throw new Error("Invalid bot token");
         }
     }
     catch (error) {
-        console.error('Error checking bot token:', error);
+        console.error("Error checking bot token:", error);
         throw error;
     }
 };
@@ -46,17 +48,18 @@ Join our announcements channel to get the latest updates and the best ways to ge
             inline_keyboard: [
                 [
                     {
-                        text: "Launch Faston", web_app: {
-                            url: `https://farm.faston.app/`
-                        }
-                    }
+                        text: "Launch Faston",
+                        web_app: {
+                            url: `https://farm.faston.app/`,
+                        },
+                    },
                 ],
                 [
                     {
                         text: "Join Community",
-                        url: "https://t.me/FastonSwap"
-                    }
-                ]
+                        url: "https://t.me/FastonSwap",
+                    },
+                ],
             ],
             one_time_keyboard: false,
         },
@@ -70,7 +73,7 @@ const init = async () => {
         console.log(`Bot started on https://t.me/${botInfo.username}`);
     }
     catch (error) {
-        console.error('Failed to initialize bot:', error);
+        console.error("Failed to initialize bot:", error);
     }
 };
 init();
