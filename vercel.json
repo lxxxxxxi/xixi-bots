@@ -8,11 +8,7 @@
     ],
     "routes": [
         {
-            "src": "/bot1",
-            "dest": "src/index.js"
-        },
-        {
-            "src": "/bot2",
+            "src": "/(.*)",
             "dest": "src/index.js"
         }
     ]

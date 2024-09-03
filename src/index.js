@@ -3,6 +3,10 @@ import faston_bot from './faston_app';
 
 const app = express();
 
+app.get('/', (req, res) => {
+    res.status(200).send('Health');
+});
+
 app.get('/bot1', (req, res) => {
     res.status(200).send('Bot1 webhook processed');
 });
