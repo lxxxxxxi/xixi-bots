@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const token = process.env.KGTOLB_BOT_TOKEN;
+const token = process.env.XXXXXX_BOT_TOKEN;
 const bot = new Telegraf(token);
 
 // Set the bot API endpoint

@@ -1,8 +1,10 @@
 import { Telegraf, Markup, Scenes, session } from 'telegraf';
 import { message } from 'telegraf/filters';
+import dotenv from 'dotenv';
 
-
-const bot = new Telegraf();
+dotenv.config();
+const token = process.env.KGTOLB_BOT_TOKEN;
+const bot = new Telegraf(token);
 
 let barWeight = 20; // Default bar weight in kg
 
@@ -97,9 +99,8 @@ bot.command('kgtolb', (ctx) => ctx.scene.enter('kgToLb'));
 bot.command('lbtokg', (ctx) => ctx.scene.enter('lbToKg'));
 bot.command('setting', (ctx) => ctx.scene.enter('setting'));
 
+// bot.launch();
+// process.once('SIGINT', () => bot.stop('SIGINT'));
+// process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
-bot.launch();
-
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+export default bot

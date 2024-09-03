@@ -1,5 +1,6 @@
 import express from 'express';
 import faston_bot from './faston_app.js';
+import kg_bot from './kgbot.js';
 
 const app = express();
 
@@ -21,5 +22,6 @@ app.get('/', (req, res) => {
 
 const domain = 'https://xixi-bots.vercel.app';
 app.use(await faston_bot.createWebhook({ domain, path: '/bot1' }));
+app.use(await kg_bot.createWebhook({ domain, path: '/bot2' }));
 
 export default app;
