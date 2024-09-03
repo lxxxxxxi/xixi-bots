@@ -2,14 +2,23 @@
     "version": 2,
     "builds": [
         {
-            "src": "src/faston_app.js",
-            "use": "@vercel/node"
+            "src": "src/index.js",
+            "use": "@vercel/node",
+            "config": {
+                "includeFiles": [
+                    "src/**/*"
+                ]
+            }
         }
     ],
     "routes": [
         {
-            "src": "/(.*)",
-            "dest": "src/faston_app.js"
+            "src": "/bot1",
+            "dest": "/src/index.ts"
+        },
+        {
+            "src": "/bot2",
+            "dest": "/src/index.ts"
         }
     ]
 }

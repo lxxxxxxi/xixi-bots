@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const token = process.env.FASTON_BOT_TOKEN;
+const token = process.env.KGTOLB_BOT_TOKEN;
 const app = express();
 const bot = new Telegraf(token);
 
