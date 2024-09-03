@@ -14,11 +14,11 @@
     "routes": [
         {
             "src": "/bot1",
-            "dest": "/src/index.ts"
+            "dest": "/src/index.js"
         },
         {
             "src": "/bot2",
-            "dest": "/src/index.ts"
+            "dest": "/src/index.js"
         }
     ]
 }
