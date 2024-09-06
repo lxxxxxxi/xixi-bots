@@ -37,7 +37,7 @@ bot.start((ctx) => {
             inline_keyboard: [
                 [
                     {
-                        text: "Launch Faston",
+                        text: "Launch",
                         web_app: {
                             url: `https://dogs-mock-two.vercel.app/`,
                         },
