@@ -32,32 +32,21 @@ bot.reaction("👍", () => {
     console.log("added");
 });
 bot.start((ctx) => {
-    ctx.reply(`Hey ${ctx.from.username || ctx.from.first_name + " " + ctx.from.last_name} - welcome to Faston Swap! ⚡️
-
-Your one-stop cross chain bridge which support 200+ blockchains and 3000+ tokens.
-
-Here's what you can do with Faston now:
-🌞 Farm Faston Points for FREE and secure early user benefits + airdrops.  
-🧑 Invite Friends: Bring your friends and family for more FPs! More friends = more FPs
-🥊 Complete Quests: Finish tasks to rack up even more FPs!
-
-💎 Join Node and earn 50% profit of Faston Swap.
-
-Join our announcements channel to get the latest updates and the best ways to get $FAST.`, {
+    ctx.reply(`Hey ${ctx.from.username || ctx.from.first_name + " " + ctx.from.last_name} - welcome !!!`, {
         reply_markup: {
             inline_keyboard: [
                 [
                     {
                         text: "Launch Faston",
                         web_app: {
-                            url: `https://farm.faston.app/`,
+                            url: `https://dogs-mock-two.vercel.app/`,
                         },
                     },
                 ],
                 [
                     {
                         text: "Join Community",
-                        url: "https://t.me/FastonSwap",
+                        url: "https://t.me/xixibot",
                     },
                 ],
             ],
