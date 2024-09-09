@@ -12,18 +12,18 @@ let barWeight = 20; // Default bar weight in kg
 
 // Utility function to create continue/exit keyboard
 const getContinueKeyboard = () => {
-  return Markup.keyboard([["Continue", "Exit"]]).resize();
+  return Markup.keyboard([["继续", "退出"]]).resize();
 };
 
 // Scene for kg to lb conversion
 const kgToLbScene = new Scenes.BaseScene<SceneContext>("kgToLb");
-kgToLbScene.enter((ctx) => ctx.reply("Please enter a weight in kg:"));
-kgToLbScene.hears("Exit", (ctx) => {
-  ctx.reply("Exiting kg to lb conversion.", Markup.removeKeyboard());
+kgToLbScene.enter((ctx) => ctx.reply("请输入一个以 Kg 为单位的重量："));
+kgToLbScene.hears("退出", (ctx) => {
+  ctx.reply("已退出当前回话", Markup.removeKeyboard());
   return ctx.scene.leave();
 });
-kgToLbScene.hears("Continue", (ctx) => {
-  return ctx.reply("Please enter a weight in kg:");
+kgToLbScene.hears("继续", (ctx) => {
+  return ctx.reply("请输入一个以 Kg 为单位的重量：");
 });
 kgToLbScene.on(message("text"), (ctx) => {
   const kg = parseFloat(ctx.message.text);
@@ -44,13 +44,13 @@ kgToLbScene.on(message("text"), (ctx) => {
 
 // Scene for lb to kg conversion
 const lbToKgScene = new Scenes.BaseScene<SceneContext>("lbToKg");
-lbToKgScene.enter((ctx) => ctx.reply("Please enter a weight in lb:"));
-lbToKgScene.hears("Exit", (ctx) => {
-  ctx.reply("Exiting lb to kg conversion.", Markup.removeKeyboard());
+lbToKgScene.enter((ctx) => ctx.reply("请输入一个以 Lb 为单位的重量:"));
+lbToKgScene.hears("退出", (ctx) => {
+  ctx.reply("已退出当前回话", Markup.removeKeyboard());
   return ctx.scene.leave();
 });
-lbToKgScene.hears("Continue", (ctx) => {
-  return ctx.reply("Please enter a weight in lb:");
+lbToKgScene.hears("继续", (ctx) => {
+  return ctx.reply("请输入一个以 Lb 为单位的重量:");
 });
 lbToKgScene.on(message("text"), (ctx) => {
   const lb = parseFloat(ctx.message.text);
@@ -66,16 +66,14 @@ lbToKgScene.on(message("text"), (ctx) => {
 
 // Scene for setting bar weight
 const settingScene = new Scenes.BaseScene<SceneContext>("setting");
-settingScene.enter((ctx) =>
-  ctx.reply("Please enter the default bar weight in kg:")
-);
+settingScene.enter((ctx) => ctx.reply("请输入一个以 kg 为单位的杠铃重量:"));
 lbToKgScene.on(message("text"), (ctx) => {
   const weight = parseFloat(ctx.message.text);
   if (isNaN(weight)) {
     return ctx.reply("请输入一个有效数字");
   }
   barWeight = weight;
-  ctx.reply(`Bar weight set to ${weight} kg.`);
+  ctx.reply(`杠铃重量已设置为 ${weight}kg.`);
   ctx.scene.leave();
 });
 
@@ -91,7 +89,7 @@ bot.use(stage.middleware());
 
 bot.command("start", (ctx) => {
   ctx.reply(
-    "Welcome to the Weight Converter Bot!",
+    "你好! 欢迎使用杠铃重量转换器!",
     Markup.keyboard([["Kg ➡️ Lb", "Lb ➡️ Kg"], ["Setting"]]).resize()
   );
 });
