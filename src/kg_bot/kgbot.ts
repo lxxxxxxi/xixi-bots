@@ -16,16 +16,16 @@ const getContinueKeyboard = () => {
 };
 
 // Scene for kg to lb conversion
-const kgToLbScene = new Scenes.BaseScene<SceneContext>("kgToLb");
-kgToLbScene.enter((ctx) => ctx.reply("请输入一个以 Kg 为单位的重量："));
-kgToLbScene.hears("退出", (ctx) => {
+const kgToLbsScene = new Scenes.BaseScene<SceneContext>("kgToLbs");
+kgToLbsScene.enter((ctx) => ctx.reply("请输入一个以 Kg 为单位的重量："));
+kgToLbsScene.hears("退出", (ctx) => {
   ctx.reply("已退出当前回话", Markup.removeKeyboard());
   return ctx.scene.leave();
 });
-kgToLbScene.hears("继续", (ctx) => {
+kgToLbsScene.hears("继续", (ctx) => {
   return ctx.reply("请输入一个以 Kg 为单位的重量：");
 });
-kgToLbScene.on(message("text"), (ctx) => {
+kgToLbsScene.on(message("text"), (ctx) => {
   const kg = parseFloat(ctx.message.text);
   if (isNaN(kg)) {
     return ctx.reply("请输入一个有效数字");
@@ -35,31 +35,31 @@ kgToLbScene.on(message("text"), (ctx) => {
   const totalPlateWeightLb = lb / 2;
   ctx.reply(
     `${kg} kg = ${lb.toFixed(2)} lb\n` +
-      `单边加 (不减杠铃重量): ${totalPlateWeightLb.toFixed(2)} lb\n` +
-      `单边加 (减去杠铃重量): ${plateWeightLb.toFixed(2)} lb\n` +
+      `单边加 (不减杠铃重量): ${totalPlateWeightLb.toFixed(2)} lbs\n` +
+      `单边加 (减去杠铃重量): ${plateWeightLb.toFixed(2)} lbs\n` +
       `您可以选择继续还是退出:`,
     getContinueKeyboard()
   );
 });
 
 // Scene for lb to kg conversion
-const lbToKgScene = new Scenes.BaseScene<SceneContext>("lbToKg");
-lbToKgScene.enter((ctx) => ctx.reply("请输入一个以 Lb 为单位的重量:"));
-lbToKgScene.hears("退出", (ctx) => {
+const lbsToKgScene = new Scenes.BaseScene<SceneContext>("lbsToKg");
+lbsToKgScene.enter((ctx) => ctx.reply("请输入一个以 Lb 为单位的重量:"));
+lbsToKgScene.hears("退出", (ctx) => {
   ctx.reply("已退出当前回话", Markup.removeKeyboard());
   return ctx.scene.leave();
 });
-lbToKgScene.hears("继续", (ctx) => {
+lbsToKgScene.hears("继续", (ctx) => {
   return ctx.reply("请输入一个以 Lb 为单位的重量:");
 });
-lbToKgScene.on(message("text"), (ctx) => {
+lbsToKgScene.on(message("text"), (ctx) => {
   const lb = parseFloat(ctx.message.text);
   if (isNaN(lb)) {
     return ctx.reply("请输入一个有效数字");
   }
   const kg = lb / 2.20462;
   ctx.reply(
-    `${lb} lb = ${kg.toFixed(2)} kg\n\n` + `您可以选择继续还是退出:`,
+    `${lb} lbs = ${kg.toFixed(2)} kg\n\n` + `您可以选择继续还是退出:`,
     getContinueKeyboard()
   );
 });
@@ -67,7 +67,7 @@ lbToKgScene.on(message("text"), (ctx) => {
 // Scene for setting bar weight
 const settingScene = new Scenes.BaseScene<SceneContext>("setting");
 settingScene.enter((ctx) => ctx.reply("请输入一个以 kg 为单位的杠铃重量:"));
-lbToKgScene.on(message("text"), (ctx) => {
+lbsToKgScene.on(message("text"), (ctx) => {
   const weight = parseFloat(ctx.message.text);
   if (isNaN(weight)) {
     return ctx.reply("请输入一个有效数字");
@@ -79,8 +79,8 @@ lbToKgScene.on(message("text"), (ctx) => {
 
 // 将场景管理功能集成到 Telegraf 机器人中
 const stage = new Scenes.Stage<SceneContext>([
-  kgToLbScene,
-  lbToKgScene,
+  kgToLbsScene,
+  lbsToKgScene,
   settingScene,
 ]);
 
@@ -90,29 +90,25 @@ bot.use(stage.middleware());
 bot.command("start", (ctx) => {
   ctx.reply(
     "你好! 欢迎使用杠铃重量转换器!",
-    Markup.keyboard([["Kg ➡️ Lb", "Lb ➡️ Kg"], ["Setting"]]).resize()
+    Markup.keyboard([["Kg ➡️ Lbs", "Lbs ➡️ Kg"], ["Setting"]]).resize()
   );
 });
 
-bot.hears("Kg ➡️ Lb", (ctx) => ctx.scene.enter("kgToLb"));
-bot.hears("Lb ➡️ Kg", (ctx) => ctx.scene.enter("lbToKg"));
+bot.hears("Kg ➡️ Lbs", (ctx) => ctx.scene.enter("kgToLbs"));
+bot.hears("Lbs ➡️ Kg", (ctx) => ctx.scene.enter("lbsToKg"));
 bot.hears("Setting", (ctx) => ctx.scene.enter("setting"));
 
 // Set bot commands for the command menu
 bot.telegram.setMyCommands([
   { command: "start", description: "Start the bot and show main menu" },
-  { command: "kgtolb", description: "Convert kg to lb" },
-  { command: "lbtokg", description: "Convert lb to kg" },
+  { command: "kgtolbs", description: "Convert kg to lbs" },
+  { command: "lbstokg", description: "Convert lbs to kg" },
   { command: "setting", description: "Set default bar weight" },
 ]);
 
 // Handle command menu actions
-bot.command("kgtolb", (ctx) => ctx.scene.enter("kgToLb"));
-bot.command("lbtokg", (ctx) => ctx.scene.enter("lbToKg"));
+bot.command("kgtolbs", (ctx) => ctx.scene.enter("kgToLbs"));
+bot.command("lbstokg", (ctx) => ctx.scene.enter("lbsToKg"));
 bot.command("setting", (ctx) => ctx.scene.enter("setting"));
-
-// bot.launch();
-// process.once('SIGINT', () => bot.stop('SIGINT'));
-// process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
 export default bot;
