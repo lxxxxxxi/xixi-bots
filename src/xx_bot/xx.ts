@@ -53,7 +53,7 @@ bot.start((ctx) => {
           ],
           [
             {
-              text: "Join Community",
+              text: "Join",
               url: "https://t.me/xixibot",
             },
           ],
