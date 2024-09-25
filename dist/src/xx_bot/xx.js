@@ -39,7 +39,8 @@ bot.start((ctx) => {
                     {
                         text: "Launch",
                         web_app: {
-                            url: `https://t.me/xxxxxxx_hh_bot/dogs`,
+                            url: `https://dogs-mock-drab.vercel.app/`,
+                            // url: `https://t.me/xxxxxxx_hh_bot/dogs`,
                         },
                     },
                 ],
